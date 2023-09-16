@@ -1,0 +1,407 @@
+<template>
+    <h1 class="mt-4">Panel Usuarios</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item">
+            <router-link :to="{ name: 'home' }">
+                Dashboard
+            </router-link>
+        </li>
+        <li class="breadcrumb-item">
+            <router-link :to="{ name: 'usuarios-main' }">
+                Usuarios
+            </router-link>
+        </li>
+        <li class="breadcrumb-item active">Panel Usuarios</li>
+    </ol>
+    <hr class="mb-4">
+    <div>
+        <div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="text-start mb-2">
+                        <router-link class="btn btn-orange rounded-pill" to="/">
+                            <i class="fa-solid fa-circle-plus"></i>
+                            Usuario Nuevo
+                        </router-link>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="text-end mb-2">
+                        <a class="btn rounded-pill"
+                            :class="{ 'btn-primary': !mostrarFiltros, 'btn-secondary': mostrarFiltros }"
+                            @click="mostrarFiltros = !mostrarFiltros">
+                            <i class="bx bx-filter-alt"></i>
+                            <span v-if="mostrarFiltros">
+                                <i class="fa-solid fa-filter-circle-xmark"></i>
+                                Ocultar filtros
+                            </span>
+                            <span v-if="!mostrarFiltros">
+                                <i class="fa-solid fa-filter"></i>
+                                Mostrar filtros
+                            </span>
+                        </a>
+                    </div>
+                </div>
+                <div v-if="mostrarFiltros" class="col-lg-12 mb-2">
+                    <div class="row">
+                        <div class="col-12 d-flex align-items-stretch">
+                            <div class="card card-body">
+                                <div class="p-4">
+                                    <div class="row">
+                                        <div class="form-group col-lg-6">
+                                            <label>Estado</label>
+                                            <select v-model="estado" @change="filtrar" class="form-select">
+                                                <option value="null">Todos</option>
+                                                <option value="0">Interesado</option>
+                                                <option value="1">Pendiente</option>
+                                                <option value="3">Exitosa</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-lg-6">
+                                            <label>Agentes</label>
+                                            <select v-model="agente" v-on:change="filtrar()" class="form-control">
+                                                <option value="null">Todos</option>
+                                                <option :value="agente" v-for="(agente, index_agente) in agentes"
+                                                    v-bind:key="index_agente">{{
+                                                        agente.nombre_completo }}</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-lg-6">
+                                            <label>Tipo de membresia</label>
+                                            <select v-model="tipo_membresia" v-on:change="filtrar()" class="form-control">
+                                                <option value="null">Todos</option>
+                                                <option value="1">Super WOW</option>
+                                                <option value="2">WOW</option>
+                                                <option value="3">Básica</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-lg-6">
+                                            <label>Tipo de usuario</label>
+                                            <select v-model="tipo_usuario" v-on:change="filtrar()" class="form-control">
+                                                <option value="null">Todos</option>
+                                                <option value="0">Normal</option>
+                                                <option value="1">Marketing</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-12">
+                                            <button class="btn btn-danger rounded-pill d-table mx-auto my-3"
+                                                @click="clear_filters">
+                                                <i class="fa-solid fa-broom-ball"></i>
+                                                Limpiar filtros
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card px-3 py-3">
+            <div class="row justify-content-between mb-2">
+                <div class="col-4">
+                    <div class="input-group mb-3 shadow border">
+                        <span class="input-group-text" id="basic-addon1">
+                            <strong>
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </strong>
+                        </span>
+                        <input @keyup="get_search" v-model="search" type="text" class="form-control"
+                            placeholder="Buscar Usuario..." aria-label="Username" aria-describedby="basic-addon1" />
+                    </div>
+                </div>
+                <div class="col-2">
+                    <button class="btn btn-warning d-table ms-auto"
+                        style="border-radius:30px;padding:3px 10px;font-weight:600;" @click="setVista">
+                        <div v-if="vista == 2"><i class="fa-solid fa-table"></i> Vista Tabla</div>
+                        <div v-if="vista == 1"><i class="fa-regular fa-address-card"></i> Vista Ficha</div>
+                    </button>
+                </div>
+            </div>
+            <div class="row justify-content-between mb-2">
+                <div class="col-2">
+                    <div class="form-floating">
+                        <select v-model="itemsPerPage" class="form-select" id="floatingSelect"
+                            aria-label="Floating label select" @change="filtrar" style="border-radius:20px;">
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="30">30</option>
+                            <option value="50">50</option>
+                        </select>
+                        <label for="floatingSelect">cantidad de objetos en tabla</label>
+                    </div>
+                </div>
+                <div class="col-2" style="text-align:end;">
+                    <button class="btn btn-success me-1 rounded-pill" style="padding:3px 10px;">
+                        <download-excel :data="aliadosImp" :fields="json_fields" worksheet="My Worksheet" name="Aliados.xls"
+                            style="color:#ffffff;font-weight:600;">
+                            <i class="fa-solid fa-download"></i>
+                            Descarga
+                        </download-excel>
+                    </button>
+                </div>
+            </div>
+            <div v-if="loading" class="col-12 text-center" style="margin-top: 10em">
+                <i class="fa-solid fa-spinner fa-spin" style="font-size:50px;"></i>
+            </div>
+            <div v-else class="col-12">
+                <Table table_type="aliados" :data="aliados" :session="local_session" v-if="vista == 1" />
+
+                <Ficha table_type="aliados" :data="aliados" :session="local_session" v-if="vista == 2" />
+
+            </div>
+        </div>
+        <section class="paginator">
+            <div class="container">
+                <ul class="pagination">
+                    <li v-for="num in    pages    " :key="num" class="page-item" :class="{ 'active': page == num }"
+                        @click="changePage(num)">
+                        <span class="page-link">{{ num }}</span>
+                    </li>
+                </ul>
+            </div>
+        </section>
+    </div>
+</template>
+
+<script>
+import { computed, ref } from 'vue'
+import Table from '@/modules/dashboard/components/Tables.vue'
+import Ficha from '@/modules/dashboard/components/CardFicha.vue'
+import { useStore } from 'vuex'
+import useAliados from '../../composables/useAliados'
+export default {
+    name: 'Panel_usuarios_Reddy',
+    components: { Table, Ficha },
+    props: {
+        session: Object,
+    },
+    setup(props) {
+        const store = useStore()
+        const local_session = ref(props.session)
+
+        const aliados = computed(() => store.getters['dashboard/getAliados'])
+        const aliadosImp = ref([])
+        const categoria = ref(null)
+        const estado = ref(null)
+        const id_sucursal = ref(null)
+        const id_usuario = ref(null)
+        const itemsPerPage = ref(10)
+        const loading = ref(false)
+        const mostrarFiltros = ref(false)
+        const page = ref(1)
+        const pages = ref([])
+        const search = ref(null)
+        const tipo_alianza = ref(null)
+        const tipo_descuento = ref(null)
+        const vista = ref(1)
+        const zona = ref(null)
+
+        const { get_categorias, get_sucursales, get_tipos_alianzas, get_tipos_descuentos } = useAliados(local_session.value)
+
+        const get_aliados = async () => {
+            loading.value = true;
+            let params = {
+                categoria: categoria.value,
+                estado: estado.value,
+                id_sucursal: id_sucursal.value,
+                id_usuario: id_usuario.value,
+                itemsPerPage: itemsPerPage.value,
+                page: page.value,
+                search: search.value,
+                tipo_alianza: tipo_alianza.value,
+                tipo_descuento: tipo_descuento.value,
+                zona: zona.value,
+            }
+            const resp = await store.dispatch('dashboard/getAliados', [params, local_session.value.token])
+            loading.value = false
+            let pagesTotal = Math.ceil(resp.data.data.total_aliados / itemsPerPage.value);
+            pages.value = range(1, pagesTotal);
+            return resp
+        }
+
+        const range = (start, end) => {
+            return [...Array(end).keys()].map((el) => el + start);
+        }
+
+        const changePage = (num) => {
+            page.value = num;
+            console.log()
+            get_aliados(local_session.value.token);
+        }
+
+        const filtrar = () => {
+            get_aliados(local_session.value.token)
+            get_aliados()
+        }
+
+        const clear_filters = () => {
+            id_sucursal.value = null
+            estado.value = null
+            tipo_descuento.value = null
+            zona.value = null
+            tipo_alianza.value = null
+            categoria.value = null
+
+            mostrarFiltros.value = false
+
+            get_aliados(local_session.value.token)
+        }
+
+        const setVista = () => {
+            if (vista.value == 1) {
+                vista.value = 2
+            } else {
+                vista.value = 1
+            }
+        }
+
+        const get_search = () => {
+            if (page.value != 1) {
+                page.value = 1;
+            }
+            get_aliados(local_session.value.token);
+        }
+
+        const download_qr = () => {
+            window.open("https://reddytech.com.co/api/index.php/download/qr_aliados/" + local_session.value.token, "_blank");
+        }
+
+        const get_aliados_imp = async () => {
+            loading.value = true;
+            let params = {
+            };
+            const resp = await store.dispatch('dashboard/getAliadosImp', [params, local_session.value.token])
+            aliadosImp.value = resp.data.data.aliados
+        }
+
+        get_aliados(local_session.value.token)
+        get_aliados_imp()
+        get_categorias()
+        get_sucursales()
+        get_tipos_alianzas()
+        get_tipos_descuentos()
+
+        return {
+            loading,
+            local_session,
+
+            aliados,
+            aliadosImp,
+            categoria,
+            categorias: computed(() => store.getters['dashboard/getCategorias']),
+            changePage,
+            clear_filters,
+            download_qr,
+            estado,
+            filtrar,
+            get_search,
+            id_sucursal,
+            itemsPerPage,
+            mostrarFiltros,
+            page,
+            pages,
+            search,
+            setVista,
+            sucursales: computed(() => store.getters['dashboard/getSucursales']),
+            tipo_alianza,
+            tipo_descuento,
+            tipos_alianza: computed(() => store.getters['dashboard/getTiposAlianzas']),
+            tipos_descuento: computed(() => store.getters['dashboard/getTiposDescuentos']),
+            vista,
+            zona,
+            json_fields: {
+                Nombre: "nombre_aliado",
+                Estado: {
+                    field: "estado_aliado",
+                    callback: (value) => {
+                        if (value == 2) {
+                            return 'Completado'
+                        } else if (value == 1) {
+                            return 'pendiente'
+                        }
+                    }
+                },
+                Categoria: "categoria",
+                "Fecha de Registro": "fecha_registro",
+                Zona: "zona",
+            },
+        }
+
+    }
+
+}
+</script>
+
+<style scoped>
+.pagination {
+    display: table;
+    padding-left: 0;
+    margin: 1rem auto;
+    border-radius: 0.25rem;
+    margin-inline: auto;
+    width: max-content;
+}
+
+.page-item {
+    display: inline;
+}
+
+.page-item:first-child .page-link {
+    margin-left: 0;
+    border-bottom-left-radius: 0.25rem;
+    border-top-left-radius: 0.25rem;
+}
+
+.page-item:last-child .page-link {
+    border-bottom-right-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
+}
+
+.page-item.active .page-link,
+.page-item.active .page-link:focus,
+.page-item.active .page-link:hover {
+    z-index: 2;
+    color: #fff;
+    cursor: default;
+    background-color: #422A92;
+    border-color: #422A92;
+}
+
+.page-item.disabled .page-link,
+.page-item.disabled .page-link:focus,
+.page-item.disabled .page-link:hover {
+    color: #818a91;
+    pointer-events: none;
+    cursor: not-allowed;
+    background-color: #fff;
+    border-color: #ddd;
+}
+
+.page-link {
+    position: relative;
+    float: left;
+    padding: 0.5rem 0.75rem;
+    margin-left: -1px;
+    color: #422A92;
+    text-decoration: none;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    cursor: pointer;
+}
+
+.page-link:focus,
+.page-link:hover {
+    color: #422A92;
+    background-color: #eceeef;
+    border-color: #ddd;
+}
+
+.btn-orange {
+    background-color: #ff6700;
+    color: #ffffff;
+    font-weight: 600;
+    padding: 5px 10px;
+}
+</style>
