@@ -243,12 +243,12 @@
                                     </select>
                                 </div>
                             </div>
-
+                            <hr />
                             <div class="mt-3 mb-2 text-end">
-                                <button @click="update_aliado(1)" class="btn btn-orange btn-lg rounded-pill">
+                                <button @click="update_aliado(1)" class="btn btn-orange btn-lg rounded-pill mt-2 ms-1">
                                     <i class="fa-regular fa-floppy-disk"></i> Guardar y finalizar
                                 </button>
-                                <button @click="update_aliado(2)" class="btn btn-success btn-lg rounded-pill ms-1">
+                                <button @click="update_aliado(2)" class="btn btn-success btn-lg rounded-pill mt-2 ms-1">
                                     <i class="fa-regular fa-floppy-disk"></i> Guardar y continuar
                                     <i class="fa-solid fa-chevron-right"></i>
                                 </button>
@@ -305,6 +305,7 @@ export default {
             loading,
             update_aliado,
             aliado,
+            id_aliado,
             categorias: computed(() => store.getters['dashboard/getCategorias']),
             sucursales: computed(() => store.getters['dashboard/getSucursales']),
             agentes: computed(() => store.getters['dashboard/getAgentes']),

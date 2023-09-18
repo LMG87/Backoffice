@@ -44,7 +44,7 @@
                 </div>
                 <div v-if="mostrarFiltros" class="col-lg-12 mb-2">
                     <div class="row">
-                        <div class="col-12 d-flex align-items-stretch">
+                        <div class="col-lg-12 d-flex align-items-stretch">
                             <div class="card card-body">
                                 <div class="p-4">
                                     <div class="row">
@@ -100,7 +100,7 @@
         </div>
         <div class="card px-3 py-3">
             <div class="row justify-content-between mb-2">
-                <div class="col-4">
+                <div class="col-lg-4 mt-2">
                     <div class="input-group mb-3 shadow border">
                         <span class="input-group-text" id="basic-addon1">
                             <strong>
@@ -111,7 +111,7 @@
                             placeholder="Buscar Usuario..." aria-label="Username" aria-describedby="basic-addon1" />
                     </div>
                 </div>
-                <div class="col-2">
+                <div class="col-lg-2 mt-2">
                     <div class="d-table ms-auto">
                         <div class="d-flex" style="align-items: center;">
                             <label class="form-check-label me-2"
@@ -148,7 +148,7 @@
                 </div>
             </div>
             <div class="row justify-content-between mb-2">
-                <div class="col-2">
+                <div class="col-lg-2 mt-2">
                     <div class="form-floating">
                         <select v-model="itemsPerPage" class="form-select" id="floatingSelect"
                             aria-label="Floating label select" @change="filtrar" style="border-radius:20px;">
@@ -160,7 +160,7 @@
                         <label for="floatingSelect">cantidad de objetos en tabla</label>
                     </div>
                 </div>
-                <div class="col-2" style="text-align:end;">
+                <div class="col-lg-2 mt-2" style="text-align:end;">
                     <button class="btn btn-success me-1 rounded-pill" style="padding:3px 10px;">
                         <download-excel :data="aliadosImp" :fields="json_fields" worksheet="My Worksheet" name="Aliados.xls"
                             style="color:#ffffff;font-weight:600;">
@@ -170,10 +170,10 @@
                     </button>
                 </div>
             </div>
-            <div v-if="loading" class="col-12 text-center" style="margin-top: 10em">
+            <div v-if="loading" class="col-lg-12 text-center" style="margin-top: 10em">
                 <i class="fa-solid fa-spinner fa-spin" style="font-size:50px;"></i>
             </div>
-            <div v-else class="col-12">
+            <div v-else class="col-lg-12">
                 <Table table_type="aliados" :data="aliados" :session="local_session" v-if="!vista" />
 
                 <Ficha table_type="aliados" :data="aliados" :session="local_session" v-if="vista" />
@@ -445,5 +445,16 @@ export default {
     color: #ffffff;
     font-weight: 600;
     padding: 5px 10px;
+}
+
+@media (max-width: 767.98px) {
+
+    .d-table.ms-auto {
+        margin: auto;
+    }
+
+    .col-lg-2.mt-2 {
+        text-align: center !important;
+    }
 }
 </style>

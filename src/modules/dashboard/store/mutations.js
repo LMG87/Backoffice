@@ -10,6 +10,10 @@ export const setAliado = (state, aliado) => {
     state.aliado = aliado
 }
 
+export const setAlianza = (state, alianza) => {
+    state.alianza = alianza
+}
+
 export const setAliadoAnexos = (state, aliadoAnexos) => {
     state.aliadoAnexos = aliadoAnexos
 }

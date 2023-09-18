@@ -57,6 +57,11 @@ export default{
                     path: '/aliado/info_basica/:id',
                     name: 'info_basica_aliado',
                     component: () => import(/*wbpackChunkName: "info_basica_aliado"*/'@/modules/dashboard/views/aliados/Info_basica.vue')
+                },
+                {
+                    path: '/aliado/info_secundaria/:id',
+                    name: 'info_secundaria_aliado',
+                    component: () => import(/*wbpackChunkName: "info_secundaria_aliado"*/'@/modules/dashboard/views/aliados/Info_secundaria.vue')
                 }
             ]
         },
