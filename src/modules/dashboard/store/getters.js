@@ -10,6 +10,10 @@ export const getAliado = (state) => {
     return state.aliado
 }
 
+export const getAlianza = (state) => {
+    return state.alianza
+}
+
 export const getAliadoAnexos = (state) => {
     return state.aliadoAnexos
 }

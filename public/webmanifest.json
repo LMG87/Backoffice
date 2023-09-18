@@ -1,17 +1,41 @@
 {
-    "name": "Backoffice Reddy",
-    "short_name": "ReddyBack",
+    "name":"backoffice_reddy",
+    "short_name":"backoffice_reddy",
     "description": "Aplicacion administrativa de reddy.",
-    "icons": [
+    "theme_color":"#4DBA87",
+    "icons":[
         {
-            "src": "assets/icons/icon-32.png",
+            "src": ".assets/img/icons/icon-32.png",
             "sizes": "32x32",
             "type": "image/png"
         },
         {
-            "src": "assets/icons/icon-512.png",
-            "sizes": "512x512",
-            "type": "image/png"
+            "src":".assets/img/icons/icon-192.png",
+            "sizes":"192x192",
+            "type":"image/png"
+        },
+        {
+            "src":".assets/img/icons/icon-512.png",
+            "sizes":"512x512","type":"image/png"
+        },
+        {
+            "src": ".assets/img/icons/icon-32.png",
+            "sizes": "32x32",
+            "type": "image/png",
+            "purpose":"maskable"
+        },
+        {
+            "src":".assets/img/icons/icon-192.png",
+            "sizes":"192x192","type":"image/png",
+            "purpose":"maskable"
+        },
+        {
+            "src":".assets/img/icons/icon-512.png",
+            "sizes":"512x512","type":"image/png",
+            "purpose":"maskable"
         }
-    ]
+    ],
+    "start_url":".",
+    "display":"standalone",
+    "background_color":"#000000"
 }

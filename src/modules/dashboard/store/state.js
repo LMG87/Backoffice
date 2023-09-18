@@ -3,6 +3,7 @@
 // })
 
 export default () => ({
+    alianza: [],
     aliado: [],
     aliadoAnexos: [],
     aliados: [],

@@ -185,7 +185,7 @@
                                 <!-- Tabla -->
                                 <Table table_type="agentes" :data="aliados" :session="local_session" />
                             </div>
-                            <section class="paginator" v-if="fecha_completado == null">
+                            <section class="paginator" v-if="fecha_completado == null" style="overflow-x: auto;">
                                 <div class="container">
                                     <ul class="pagination">
                                         <li v-for="num in    pages    " :key="num" class="page-item"

@@ -31,6 +31,9 @@
                     <hr class="mb-0 mt-1" />
                 </div>
                 <div class="col-lg-1">
+                    <img class="img-thumbnail" :src="aliado.logo" :alt="aliado.nombre_aliado">
+                </div>
+                <div class="col-lg-1">
                     <span style="font-size: 0.8em">
                         Zona : <br />
                         <strong v-if="aliado.zona == 1">Norte</strong>
@@ -47,7 +50,7 @@
                         Teléfono :
                         <strong>{{ aliado.telefono }}</strong></span>
                 </div>
-                <div class="col-lg-5">
+                <div class="col-lg-3">
                     <span style="font-size: 0.8em">
                         Facebook : <br />
                         <strong>{{ aliado.facebook }}</strong></span>
@@ -61,7 +64,7 @@
                         Dirección : <br />
                         <strong>{{ aliado.direccion }}</strong></span>
                 </div>
-                <div class="col-lg-12 text-end">
+                <div class="col-lg-1 text-end">
                     <div class="dropdown">
                         <a class="btn btn-outline-primary btn-sm rounded-pill dropdown-toggle" href="javascript:void(0)"
                             role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">

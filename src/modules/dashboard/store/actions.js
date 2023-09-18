@@ -93,9 +93,15 @@ export const get_aliado = async ({commit}, [id, token]) => {
         const { data } = await reddyApi.get('/aliados/aliado/'+id, config , { headers })
         const aliado = data.data
         commit('setAliado', aliado)
+        if (aliado.alianza != null) {
+            commit('setAlianza', aliado.alianza)
+        }else{
+            commit('setAlianza', [])
+        }
         return { ok:true, data: data}
     } catch (error) {
         commit('setAliado', [])
+        commit('setAlianza', [])
         return { ok: false, message: error.message}
     }
 }

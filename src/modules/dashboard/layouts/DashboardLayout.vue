@@ -264,4 +264,15 @@ export default {
     color: #ffffff;
     font-weight: 600;
 }
+
+@media (max-width: 767.98px) {
+    li.nav-item.dropdown {
+        display: none;
+    }
+
+    li.d-flex.me-5 {
+        margin-left: 3rem !important;
+        margin-right: 0 !important;
+    }
+}
 </style>
